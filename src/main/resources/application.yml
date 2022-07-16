@@ -12,6 +12,12 @@ spring:
             - Path=/support/**
           filters:
             - ClientAuthFilter
+        - id: users
+          uri: lb://ISSUEMOAUSERUSERS
+          predicates:
+            - Path=/users/**
+          filters:
+            - ClientAuthFilter
 eureka:
   client:
     serviceUrl:
