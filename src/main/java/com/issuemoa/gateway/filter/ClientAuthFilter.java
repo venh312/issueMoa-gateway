@@ -20,24 +20,23 @@ public class ClientAuthFilter extends AbstractGatewayFilterFactory {
         return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
+            String uri = String.valueOf(request.getURI());
+            log.info("ClientAuthFilter getURI => {}", uri);
 
-            log.info("ClientAuthFilter : request uri => {}", request.getURI());
+            if (!uri.contains(("v3/api-docs"))) {
+                // Request Header 에 X-CLIENT-KEY가 존재하지 않을 때
+                if (!request.getHeaders().containsKey("X-CLIENT-KEY"))
+                    return handleUnAuthorized(exchange); // 401 Error
 
-            // Request Header 에 X-CLIENT-KEY가 존재하지 않을 때
-            if (!request.getHeaders().containsKey("X-CLIENT-KEY")) {
-                return handleUnAuthorized(exchange); // 401 Error
+                // Request Header 에서 X-CLIENT-KEY 문자열 받아오기
+                List<String> clientKey = request.getHeaders().get("X-CLIENT-KEY");
+                String clientKeyString = Objects.requireNonNull(clientKey).get(0);
+
+                // clientKey 검증
+                if (!clientKeyString.equals("SamQHPleQjbSKeyRvJWElcHJvamVjdCFA"))
+                    return handleUnAuthorized(exchange); // 토큰이 일치하지 않을 때
             }
 
-            // Request Header 에서 X-CLIENT-KEY 문자열 받아오기
-            List<String> clientKey = request.getHeaders().get("X-CLIENT-KEY");
-            String clientKeyString = Objects.requireNonNull(clientKey).get(0);
-
-            // clientKey 검증
-            if (!clientKeyString.equals("SamQHPleQjbSKeyRvJWElcHJvamVjdCFA")) {
-                return handleUnAuthorized(exchange); // 토큰이 일치하지 않을 때
-            }
-
-            // Custom Post Filter Handler
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                 log.info("ClientAuthFilter : response code -> {}", response.getStatusCode());
             }));
