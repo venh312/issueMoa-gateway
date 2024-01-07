@@ -2,20 +2,26 @@ server:
   port: 8000
 spring:
   application:
-    name: issuemoaUserGateway
+    name: issueMoaGateway
   cloud:
     gateway:
       routes:
-        - id: support
-          uri: lb://ISSUEMOAUSERSUPPORT
+        - id: board
+          uri: lb://ISSUEMOABOARD
           predicates:
-            - Path=/support/**
+            - Path=/board/**, /board-favorite/**
           filters:
             - ClientAuthFilter
         - id: users
-          uri: lb://ISSUEMOAUSERUSERS
+          uri: lb://ISSUEMOAUSERS
           predicates:
             - Path=/users/**
+          filters:
+            - ClientAuthFilter
+        - id: voca
+          uri: lb://ISSUEMOAVOCA
+          predicates:
+            - Path=/voca/**, /voca-learn/**, /grade-exp/**
           filters:
             - ClientAuthFilter
 eureka:

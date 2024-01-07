@@ -4,9 +4,9 @@ plugins {
 	id 'java'
 }
 
-group = 'com.issuemoa.user.gateway'
+group = 'com.issuemoa.gateway'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '17'
 
 configurations {
 	compileOnly {
