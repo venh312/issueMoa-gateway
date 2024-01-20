@@ -37,5 +37,5 @@ springdoc:
         name: board
       - url: /users/v3/api-docs
         name: users
-      - url: /voca/v3/api-docs
-        name: voca
+      - url: /learning/v3/api-docs
+        name: learning
