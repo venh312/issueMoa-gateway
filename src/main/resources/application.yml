@@ -23,7 +23,7 @@ spring:
         - id: learning
           uri: lb://ISSUEMOALEARNING
           predicates:
-            - Path=/interview/**, /voca/**, /voca-learn/**, /grade-exp/**
+            - Path=/learning/**, /interview/**, /voca/**, /voca-learn/**, /grade-exp/**
           filters:
             - ClientAuthFilter
 eureka:
