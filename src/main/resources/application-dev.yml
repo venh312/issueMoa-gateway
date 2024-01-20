@@ -18,10 +18,10 @@ spring:
             - Path=/users/**
           filters:
             - ClientAuthFilter
-        - id: voca
-          uri: lb://ISSUEMOAVOCA
+        - id: learning
+          uri: lb://ISSUEMOALEARNING
           predicates:
-            - Path=/voca/**, /voca-learn/**, /grade-exp/**
+            - Path=/interview/**, /voca/**, /voca-learn/**, /grade-exp/**
           filters:
             - ClientAuthFilter
 eureka:
