@@ -9,8 +9,6 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,19 +20,15 @@ public class ClientAuthFilter extends AbstractGatewayFilterFactory {
         return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
-            URI uri = request.getURI();
+            String uri = String.valueOf(request.getURI());
 
-            log.info("[GatewayFilter] CALL URI :: {}", uri);
-            log.info("[GatewayFilter] CALL URI  Host:: {}", uri.getHost());
-            log.info("[GatewayFilter] CALL URI port :: {}", uri.getPort());
-            log.info("[GatewayFilter] CALL URI userInfo :: {}", uri.getUserInfo());
-            log.info("[GatewayFilter] HostName :: {}", request.getRemoteAddress().getHostName());
-            log.info("[GatewayFilter] HostString :: {}", request.getRemoteAddress().getHostString());
+            log.info("[GatewayFilter] Uri :: {}", uri);
             log.info("[GatewayFilter] Address :: {}", request.getRemoteAddress().getAddress());
+            log.info("[GatewayFilter] HostName :: {}", request.getRemoteAddress().getHostName());
             log.info("[GatewayFilter] Port :: {}", request.getRemoteAddress().getPort());
 
             // Swagger api-docs 의 경우는 Pass
-            if (!uri.getHost().contains(("v3/api-docs"))) {
+            if (!uri.contains(("v3/api-docs"))) {
                 // Request Header 에 X-CLIENT-KEY가 존재하지 않을 때
                 if (!request.getHeaders().containsKey("X-CLIENT-KEY"))
                     return handleUnAuthorized(exchange); // 401 Error
@@ -45,17 +39,17 @@ public class ClientAuthFilter extends AbstractGatewayFilterFactory {
 
                 // clientKey 검증
                 if (!clientKeyString.equals("SamQHPleQjbSKeyRvJWElcHJvamVjdCFA"))
-                    return handleUnAuthorized(exchange); // 토큰이 일치하지 않을 때
+                    return handleUnAuthorized(exchange); // 토큰이 일치 하지 않을 때
             }
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                log.info("ClientAuthFilter : response code -> {}", response.getStatusCode());
+                log.info("[GatewayFilter] Response Status Code ::  {}", response.getStatusCode());
             }));
         });
     }
 
     private Mono<Void> handleUnAuthorized(ServerWebExchange exchange) {
-        log.info("ClientAuthFilter : response code -> {}", "401 Unauthorized");
+        log.info("[handleUnAuthorized] :: 401 Unauthorized");
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         return response.setComplete();
