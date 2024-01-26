@@ -21,8 +21,14 @@ public class ClientAuthFilter extends AbstractGatewayFilterFactory {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
             String uri = String.valueOf(request.getURI());
-            log.info("ClientAuthFilter getURI => {}", uri);
 
+            log.info("[GatewayFilter] CALL URI :: {}", uri);
+            log.info("[GatewayFilter] HostName :: {}", request.getRemoteAddress().getHostName());
+            log.info("[GatewayFilter] HostString :: {}", request.getRemoteAddress().getHostString());
+            log.info("[GatewayFilter] Address :: {}", request.getRemoteAddress().getAddress());
+            log.info("[GatewayFilter] Port :: {}", request.getRemoteAddress().getPort());
+
+            // Swagger api-docs 의 경우는 Pass
             if (!uri.contains(("v3/api-docs"))) {
                 // Request Header 에 X-CLIENT-KEY가 존재하지 않을 때
                 if (!request.getHeaders().containsKey("X-CLIENT-KEY"))
