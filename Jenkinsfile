@@ -38,7 +38,7 @@ pipeline {
                         sh "docker rm issuemoa-gateway"
                     }
                     
-                    sh "docker run -d --name issuemoa-gateway -p 8000:8000 -v /home/venh/logs:/var/log --network issuemoa issuemoa/gateway"
+                    sh "docker run -d --name issuemoa-gateway -p 8000:8000 -v /home/venh/logs:/var/log --network issuemoa -e TZ=Asia/Seoul issuemoa/gateway"
                 }
             }
         }
