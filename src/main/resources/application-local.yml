@@ -3,39 +3,10 @@ server:
 spring:
   application:
     name: issueMoaGateway
-  cloud:
-    gateway:
-      routes:
-        - id: board
-          uri: lb://ISSUEMOABOARD
-          predicates:
-            - Path=/board/**, /board-favorite/**
-          filters:
-            - ClientAuthFilter
-        - id: users
-          uri: lb://ISSUEMOAUSERS
-          predicates:
-            - Path=/users/**
-          filters:
-            - ClientAuthFilter
-        - id: learning
-          uri: lb://ISSUEMOALEARNING
-          predicates:
-            - Path=/learning/**, /interview/**, /voca/**, /voca-learn/**, /grade-exp/**
-          filters:
-            - ClientAuthFilter
+  config:
+    import:
+      - common.yml
 eureka:
   client:
     serviceUrl:
       defaultZone: http://192.168.0.23:38761/eureka
-
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    urls:
-      - url: /board/v3/api-docs
-        name: board
-      - url: /users/v3/api-docs
-        name: users
-      - url: /learning/v3/api-docs
-        name: learning
