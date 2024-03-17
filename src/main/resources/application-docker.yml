@@ -1,9 +1,9 @@
 server:
-  port: 38000
+  port: 8000
 spring:
   application:
     name: issueMoaGateway
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:38761/eureka
+      defaultZone: http://issuemoa-eureka:8761/eureka
