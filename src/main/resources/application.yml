@@ -11,7 +11,7 @@ spring:
         - id: users
           uri: lb://ISSUEMOAUSERS
           predicates:
-            - Path=/users/**
+            - Path=/users/**, /oauth2/**
           filters:
             - ClientAuthFilter
         - id: learning

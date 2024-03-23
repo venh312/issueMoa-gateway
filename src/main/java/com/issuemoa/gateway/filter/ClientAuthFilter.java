@@ -28,7 +28,7 @@ public class ClientAuthFilter extends AbstractGatewayFilterFactory {
             log.info("[GatewayFilter] Port :: {}", request.getRemoteAddress().getPort());
 
             // [Swagger api-docs, OAuth2] PASS
-            if (!uri.contains(("v3/api-docs")) || uri.contains("/users/signIn/oauth2/code/google")) {
+            if (!uri.contains(("v3/api-docs")) || uri.contains("oauth2/authorization")) {
                 // Request Header 에 X-CLIENT-KEY가 존재하지 않을 때
                 if (!request.getHeaders().containsKey("X-CLIENT-KEY"))
                     return handleUnAuthorized(exchange); // 401 Error
