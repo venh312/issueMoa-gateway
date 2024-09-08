@@ -5,7 +5,7 @@ spring:
         - id: board
           uri: lb://ISSUEMOABOARD
           predicates:
-            - Path=/board/**, /board-favorite/**, /inquiry/**
+            - Path=/board/**, /board-favorite/**, /inquiry/**, /keyword/**
           filters:
             - ClientAuthFilter
         - id: users
